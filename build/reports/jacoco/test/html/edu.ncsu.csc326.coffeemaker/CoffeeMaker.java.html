@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoffeeMaker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CoffeeMaker_JUnit_Assign</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc326.coffeemaker</a> &gt; <span class="el_source">CoffeeMaker.java</span></div><h1>CoffeeMaker.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoffeeMaker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CoffeeMaker_JUnit_Assign</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc326.coffeemaker</a> &gt; <span class="el_source">CoffeeMaker.java</span></div><h1>CoffeeMaker.java</h1><pre class="source lang-java linenums">/*
  * Copyright (c) 2009,  Sarah Heckman, Laurie Williams, Dright Ho
  * All Rights Reserved.
  * 
@@ -14,6 +14,7 @@
 package edu.ncsu.csc326.coffeemaker;
 
 import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
+import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
 
 /**
  * @author Sarah Heckman
@@ -28,10 +29,10 @@ public class CoffeeMaker {
      * Constructor for the coffee maker
      *
      */
-<span class="fc" id="L31">	public CoffeeMaker() {</span>
-<span class="fc" id="L32">	    recipeBook = new RecipeBook();</span>
-<span class="fc" id="L33">		inventory = new Inventory();</span>
-<span class="fc" id="L34">	}</span>
+<span class="fc" id="L32">	public CoffeeMaker() {</span>
+<span class="fc" id="L33">	    recipeBook = new RecipeBook();</span>
+<span class="fc" id="L34">		inventory = new Inventory();</span>
+<span class="fc" id="L35">	}</span>
 	
 	/**
 	 * Returns true if the recipe is added to the
@@ -41,7 +42,7 @@ public class CoffeeMaker {
 	 * @return boolean
 	 */
 	public boolean addRecipe(Recipe r) {
-<span class="fc" id="L44">		return recipeBook.addRecipe(r);</span>
+<span class="fc" id="L45">		return recipeBook.addRecipe(r);</span>
 	}
 	
 	/**
@@ -52,7 +53,7 @@ public class CoffeeMaker {
 	 * @return String
 	 */
 	public String deleteRecipe(int recipeToDelete) {
-<span class="nc" id="L55">		return recipeBook.deleteRecipe(recipeToDelete);</span>
+<span class="fc" id="L56">		return recipeBook.deleteRecipe(recipeToDelete);</span>
 	}
 	
 	/**
@@ -62,8 +63,8 @@ public class CoffeeMaker {
 	 * @param r
 	 * @return String
 	 */
-	public String editRecipe(int recipeToEdit, Recipe r) {
-<span class="nc" id="L66">		return recipeBook.editRecipe(recipeToEdit, r);</span>
+	public String editRecipe(int recipeToEdit, Recipe r) throws RecipeException {
+<span class="fc" id="L67">		return recipeBook.editRecipe(recipeToEdit, r);</span>
 	}
     
     /**
@@ -75,18 +76,18 @@ public class CoffeeMaker {
      * @return boolean
      */
     public synchronized void addInventory(String amtCoffee, String amtMilk, String amtSugar, String amtChocolate) throws InventoryException {
-<span class="fc" id="L78">	    inventory.addCoffee(amtCoffee);</span>
-<span class="fc" id="L79">	    inventory.addMilk(amtMilk);</span>
-<span class="fc" id="L80">	    inventory.addSugar(amtSugar);</span>
-<span class="fc" id="L81">	    inventory.addChocolate(amtChocolate);</span>
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L79">	    inventory.addCoffee(amtCoffee);</span>
+<span class="fc" id="L80">	    inventory.addMilk(amtMilk);</span>
+<span class="fc" id="L81">	    inventory.addSugar(amtSugar);</span>
+<span class="fc" id="L82">	    inventory.addChocolate(amtChocolate);</span>
+<span class="fc" id="L83">    }</span>
     
     /**
      * Returns the inventory of the coffee maker
      * @return Inventory
      */
     public synchronized String checkInventory() {
-<span class="nc" id="L89">        return inventory.toString();</span>
+<span class="fc" id="L90">        return inventory.toString();</span>
     }
     
     /**
@@ -97,21 +98,21 @@ public class CoffeeMaker {
      * @return int
      */
     public synchronized int makeCoffee(int recipeToPurchase, int amtPaid) {
-<span class="fc" id="L100">        int change = 0;</span>
+<span class="fc" id="L101">        int change = 0;</span>
         
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (getRecipes()[recipeToPurchase] == null) {</span>
-<span class="nc" id="L103">        	change = amtPaid;</span>
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        } else if (getRecipes()[recipeToPurchase].getPrice() &lt;= amtPaid) {</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        	if (inventory.useIngredients(getRecipes()[recipeToPurchase])) {</span>
-<span class="fc" id="L106">        		change = amtPaid - getRecipes()[recipeToPurchase].getPrice();</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (getRecipes()[recipeToPurchase] == null) {</span>
+<span class="fc" id="L104">        	change = amtPaid;</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        } else if (getRecipes()[recipeToPurchase].getPrice() &lt;= amtPaid) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        	if (inventory.useIngredients(getRecipes()[recipeToPurchase])) {</span>
+<span class="fc" id="L107">        		change = amtPaid - getRecipes()[recipeToPurchase].getPrice();</span>
         	} else {
-<span class="nc" id="L108">        		change = amtPaid;</span>
+<span class="fc" id="L109">        		change = amtPaid;</span>
         	}
         } else {
-<span class="nc" id="L111">        	change = amtPaid;</span>
+<span class="nc" id="L112">        	change = amtPaid;</span>
         }
         
-<span class="fc" id="L114">        return change;</span>
+<span class="fc" id="L115">        return change;</span>
     }
 
 	/**
@@ -119,7 +120,7 @@ public class CoffeeMaker {
 	 * @return Recipe []
 	 */
 	public synchronized Recipe[] getRecipes() {
-<span class="fc" id="L122">		return recipeBook.getRecipes();</span>
+<span class="fc" id="L123">		return recipeBook.getRecipes();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

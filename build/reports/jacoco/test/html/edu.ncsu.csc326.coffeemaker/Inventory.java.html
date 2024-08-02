@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Inventory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CoffeeMaker_JUnit_Assign</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc326.coffeemaker</a> &gt; <span class="el_source">Inventory.java</span></div><h1>Inventory.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Inventory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CoffeeMaker_JUnit_Assign</a> &gt; <a href="index.source.html" class="el_package">edu.ncsu.csc326.coffeemaker</a> &gt; <span class="el_source">Inventory.java</span></div><h1>Inventory.java</h1><pre class="source lang-java linenums">/*
  * Copyright (c) 2009,  Sarah Heckman, Laurie Williams, Dright Ho
  * All Rights Reserved.
  * 
@@ -44,7 +44,7 @@ public class Inventory {
      * @return int
      */
     public int getChocolate() {
-<span class="nc" id="L47">        return chocolate;</span>
+<span class="fc" id="L47">        return chocolate;</span>
     }
     
     /**
@@ -85,7 +85,7 @@ public class Inventory {
      * @return int
      */
     public int getCoffee() {
-<span class="nc" id="L88">        return coffee;</span>
+<span class="fc" id="L88">        return coffee;</span>
     }
     
     /**
@@ -125,7 +125,7 @@ public class Inventory {
      * @return int
      */
     public int getMilk() {
-<span class="nc" id="L128">        return milk;</span>
+<span class="fc" id="L128">        return milk;</span>
     }
     
     /**
@@ -165,7 +165,7 @@ public class Inventory {
      * @return int
      */
     public int getSugar() {
-<span class="nc" id="L168">        return sugar;</span>
+<span class="fc" id="L168">        return sugar;</span>
     }
     
     /**
@@ -192,7 +192,7 @@ public class Inventory {
 <span class="nc" id="L192">    	} catch (NumberFormatException e) {</span>
 <span class="nc" id="L193">    		throw new InventoryException(&quot;Units of sugar must be a positive integer&quot;);</span>
 <span class="fc" id="L194">    	}</span>
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if (amtSugar &lt;= 0) {</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if (amtSugar &gt;= 0) {</span>
 <span class="fc" id="L196">			Inventory.sugar += amtSugar;</span>
 		} else {
 <span class="nc" id="L198">			throw new InventoryException(&quot;Units of sugar must be a positive integer&quot;);</span>
@@ -216,8 +216,8 @@ public class Inventory {
 <span class="pc bpc" id="L216" title="1 of 2 branches missed.">        if(Inventory.sugar &lt; r.getAmtSugar()) {</span>
 <span class="nc" id="L217">            isEnough = false;</span>
         }
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if(Inventory.chocolate &lt; r.getAmtChocolate()) {</span>
-<span class="nc" id="L220">            isEnough = false;</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        if(Inventory.chocolate &lt; r.getAmtChocolate()) {</span>
+<span class="fc" id="L220">            isEnough = false;</span>
         }
 <span class="fc" id="L222">        return isEnough;</span>
     }
@@ -229,14 +229,14 @@ public class Inventory {
      * @param r
      */
     public synchronized boolean useIngredients(Recipe r) {
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">    	if (enoughIngredients(r)) {</span>
-<span class="fc" id="L233">	    	Inventory.coffee += r.getAmtCoffee();</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">    	if (enoughIngredients(r)) {</span>
+<span class="fc" id="L233">	    	Inventory.coffee -= r.getAmtCoffee();</span>
 <span class="fc" id="L234">	    	Inventory.milk -= r.getAmtMilk();</span>
 <span class="fc" id="L235">	    	Inventory.sugar -= r.getAmtSugar();</span>
 <span class="fc" id="L236">	    	Inventory.chocolate -= r.getAmtChocolate();</span>
 <span class="fc" id="L237">	    	return true;</span>
     	} else {
-<span class="nc" id="L239">    		return false;</span>
+<span class="fc" id="L239">    		return false;</span>
     	}
     }
     
@@ -246,20 +246,20 @@ public class Inventory {
      * @return String
      */
     public String toString() {
-<span class="nc" id="L249">    	StringBuffer buf = new StringBuffer();</span>
-<span class="nc" id="L250">    	buf.append(&quot;Coffee: &quot;);</span>
-<span class="nc" id="L251">    	buf.append(getCoffee());</span>
-<span class="nc" id="L252">    	buf.append(&quot;\n&quot;);</span>
-<span class="nc" id="L253">    	buf.append(&quot;Milk: &quot;);</span>
-<span class="nc" id="L254">    	buf.append(getMilk());</span>
-<span class="nc" id="L255">    	buf.append(&quot;\n&quot;);</span>
-<span class="nc" id="L256">    	buf.append(&quot;Sugar: &quot;);</span>
-<span class="nc" id="L257">    	buf.append(getSugar());</span>
-<span class="nc" id="L258">    	buf.append(&quot;\n&quot;);</span>
-<span class="nc" id="L259">    	buf.append(&quot;Chocolate: &quot;);</span>
-<span class="nc" id="L260">    	buf.append(getChocolate());</span>
-<span class="nc" id="L261">    	buf.append(&quot;\n&quot;);</span>
-<span class="nc" id="L262">    	return buf.toString();</span>
+<span class="fc" id="L249">    	StringBuffer buf = new StringBuffer();</span>
+<span class="fc" id="L250">    	buf.append(&quot;Coffee: &quot;);</span>
+<span class="fc" id="L251">    	buf.append(getCoffee());</span>
+<span class="fc" id="L252">    	buf.append(&quot;\n&quot;);</span>
+<span class="fc" id="L253">    	buf.append(&quot;Milk: &quot;);</span>
+<span class="fc" id="L254">    	buf.append(getMilk());</span>
+<span class="fc" id="L255">    	buf.append(&quot;\n&quot;);</span>
+<span class="fc" id="L256">    	buf.append(&quot;Sugar: &quot;);</span>
+<span class="fc" id="L257">    	buf.append(getSugar());</span>
+<span class="fc" id="L258">    	buf.append(&quot;\n&quot;);</span>
+<span class="fc" id="L259">    	buf.append(&quot;Chocolate: &quot;);</span>
+<span class="fc" id="L260">    	buf.append(getChocolate());</span>
+<span class="fc" id="L261">    	buf.append(&quot;\n&quot;);</span>
+<span class="fc" id="L262">    	return buf.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

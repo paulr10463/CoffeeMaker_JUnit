@@ -20,9 +20,14 @@ package edu.ncsu.csc326.coffeemaker;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.After;
 
 import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
 import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.junit.Assert.*;
 
@@ -37,12 +42,17 @@ public class CoffeeMakerTest {
 	 * The object under test.
 	 */
 	private CoffeeMaker coffeeMaker;
-	
+	private RecipeBook recipeBook;
+
+
 	// Sample recipes to use in testing.
 	private Recipe recipe1;
 	private Recipe recipe2;
 	private Recipe recipe3;
 	private Recipe recipe4;
+
+	private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	private final PrintStream originalOut = System.out;
 
 	/**
 	 * Initializes some recipes to test with and the {@link CoffeeMaker} 
@@ -53,7 +63,10 @@ public class CoffeeMakerTest {
 	 */
 	@Before
 	public void setUp() throws RecipeException {
+		System.setOut(new PrintStream(outputStream));
 		coffeeMaker = new CoffeeMaker();
+		recipeBook = new RecipeBook();
+
 		
 		//Set up for r1
 		recipe1 = new Recipe();
@@ -63,6 +76,7 @@ public class CoffeeMakerTest {
 		recipe1.setAmtMilk("1");
 		recipe1.setAmtSugar("1");
 		recipe1.setPrice("50");
+
 		
 		//Set up for r2
 		recipe2 = new Recipe();
@@ -90,6 +104,12 @@ public class CoffeeMakerTest {
 		recipe4.setAmtMilk("1");
 		recipe4.setAmtSugar("1");
 		recipe4.setPrice("65");
+	}
+
+	@After
+	public void tearDown() {
+		System.setOut(originalOut);
+		System.setIn(System.in);
 	}
 
 	/**
@@ -244,6 +264,171 @@ public class CoffeeMakerTest {
 	public void testMakeCoffeePriceException() {
 		coffeeMaker.addRecipe(recipe1);
 		assertEquals(25, coffeeMaker.makeCoffee(0, 75));
+	}
+
+
+	@Test
+	public void testMakeCoffeeWithInvalidRecipe() {
+		assertEquals(100, coffeeMaker.makeCoffee(1, 100));
+	}
+
+	@Test
+	public void testMakeCoffeeInsufficientIngredients() {
+		coffeeMaker.addRecipe(recipe2);
+		assertEquals(75, coffeeMaker.makeCoffee(0, 75));
+	}
+
+	@Test
+	public void testCheckInventory() {
+		assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", coffeeMaker.checkInventory());
+	}
+
+
+	// Duplicate recipe
+	@Test
+	public void testAddRecipe() {
+		assertTrue(recipeBook.addRecipe(recipe1));
+		assertTrue(recipeBook.addRecipe(recipe2));
+		assertFalse(recipeBook.addRecipe(recipe1));
+	}
+
+	@Test
+	public void testEditRecipe() throws RecipeException {
+		recipeBook.addRecipe(recipe1);
+		Recipe newRecipe = new Recipe();
+		newRecipe.setAmtChocolate("1");
+		newRecipe.setAmtCoffee("2");
+		newRecipe.setAmtMilk("3");
+		newRecipe.setAmtSugar("1");
+		newRecipe.setPrice("70");
+
+		assertEquals("Coffee", recipeBook.editRecipe(0, newRecipe));
+		assertEquals(newRecipe.getAmtCoffee(), recipeBook.getRecipes()[0].getAmtCoffee());
+	}
+
+
+	@Test
+	public void testSetName() throws RecipeException {
+		recipe3.setName("Latte");
+		assertEquals("Latte", recipe3.getName());
+	}
+
+	@Test(expected = RecipeException.class)
+	public void testSetNameNull() throws RecipeException {
+		recipe2.setName(null);
+	}
+
+	@Test
+	public void testSetPrice() throws RecipeException {
+		recipe2.setPrice("100");
+		assertEquals(100, recipe2.getPrice());
+	}
+
+	@Test(expected = RecipeException.class)
+	public void testSetPriceNegative() throws RecipeException {
+		recipe2.setPrice("-100");
+	}
+
+	@Test
+	public void testSetAmtCoffee() throws RecipeException {
+		recipe1.setAmtCoffee("3");
+		assertEquals(3, recipe1.getAmtCoffee());
+	}
+
+	@Test(expected = RecipeException.class)
+	public void testSetAmtCoffeeNegative() throws RecipeException {
+		recipe3.setAmtCoffee("-3");
+	}
+
+	@Test
+	public void testSetAmtMilk() throws RecipeException {
+		recipe1.setAmtMilk("2");
+		assertEquals(2, recipe1.getAmtMilk());
+	}
+
+	@Test(expected = RecipeException.class)
+	public void testSetAmtMilkNegative() throws RecipeException {
+		recipe3.setAmtMilk("-2");
+	}
+
+	@Test
+	public void testSetAmtSugar() throws RecipeException {
+		recipe2.setAmtSugar("1");
+		assertEquals(1, recipe2.getAmtSugar());
+	}
+
+	@Test(expected = RecipeException.class)
+	public void testSetAmtSugarNegative() throws RecipeException {
+		recipe1.setAmtSugar("-1");
+	}
+
+	@Test
+	public void testSetAmtChocolate() throws RecipeException {
+		recipe3.setAmtChocolate("4");
+		assertEquals(4, recipe3.getAmtChocolate());
+	}
+
+	@Test(expected = RecipeException.class)
+	public void testSetAmtChocolateNegative() throws RecipeException {
+		recipe1.setAmtChocolate("-4");
+	}
+
+	@Test
+	public void testToString() throws RecipeException {
+		recipe2.setName("Espresso");
+		assertEquals("Espresso", recipe2.toString());
+	}
+
+	@Test
+	public void testHashCode() throws RecipeException {
+		recipe2.setName("Mocha");
+		assertNotNull(recipe2.hashCode());
+	}
+
+	@Test
+	public void testEquals() throws RecipeException {
+		Recipe other = new Recipe();
+		other.setName("Mocha");
+
+		recipe2.setName("Mocha");
+		assertTrue(recipe2.equals(other));
+	}
+
+	@Test
+	public void testNotEquals() throws RecipeException {
+		Recipe other = new Recipe();
+		other.setName("Latte");
+
+		recipe1.setName("Mocha");
+		assertFalse(recipe1.equals(other));
+	}
+
+	// Tests for Main class functionalities
+	@Test
+	public void testMainMenuExit() {
+		String input = "0\n";
+		System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+		Main.main(new String[]{});
+		String output = outputStream.toString();
+
+		// Verifica que se haya mostrado el mensaje de bienvenida y el menú
+		assertTrue(output.contains("Welcome to the CoffeeMaker!\n"));
+		assertTrue(output.contains("1. Add a recipe"));
+		assertTrue(output.contains("0. Exit\n"));
+	}
+
+	@Test
+	public void testAddRecipeMain() {
+		// Simular la entrada del usuario para agregar una receta
+		String input = "1\nEspresso\n150\n3\n0\n0\n0\n0\n";
+		System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+		Main.main(new String[]{});
+		String output = outputStream.toString();
+
+		// Verificar que la receta se haya añadido exitosamente
+		assertTrue(output.contains("Espresso successfully added.\n"));
 	}
 
 }
